@@ -17,3 +17,14 @@
     - docker-ce
   tags:
     - docker-ce
+
+
+- name: keycloak | keycloak
+  hosts: all
+  remote_user: ansible
+  environment: "{{ proxy_env }}"
+  roles:
+    - keycloak
+  tags:
+    - keycloak
+
