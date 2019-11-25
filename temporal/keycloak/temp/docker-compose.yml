@@ -1,0 +1,43 @@
++version: "3.2"
+
+services:
+    mssql:
+        image: mcr.microsoft.com/mssql/server
+        ports:
+            - "1433:1433"
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=Password!23
+            - MSSQL_PID=Developer
+        volumes:
+            - ${PWD}/data/mssql-data:/mssql-data/data
+            - ${PWD}/data/mssql-translog:/mssql-translog/translog
+            - ${PWD}/data/mysql-backup:/mssql-backup/backup
+    mssqlscripts:
+        image: mcr.microsoft.com/mssql-tools
+        depends_on:
+            - mssql
+        command: /bin/bash -c 'until /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "Password!23" -Q "create database Keycloak"; do sleep 5; done'
+    keycloak:
+        image: jboss/keycloak:8.0.0
+        depends_on:
+            - mssql
+            - mssqlscripts
+        ports:
+            - "8080:8080"
+        environment:
+            - KEYCLOAK_USER=admin
+            - KEYCLOAK_PASSWORD=admin
+            - DB_VENDOR=mssql
+            - DB_USER=sa
+            - DB_PASSWORD=Password!23
+            - DB_ADDR=mssql
+            - DB_DATABASE=Keycloak
+            - PROXY_ADDRESS_FORWARDING=true
+    nginx:
+        image: nginx:alpine
+        volumes:
+            - ${PWD}/config/default.conf:/etc/nginx/conf.d/default.conf
+            - ${PWD}/config/ssl-certs:/etc/nginx/ssl-certs
+        ports:
+            - '443:443'
