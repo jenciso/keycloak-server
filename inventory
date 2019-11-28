@@ -1,2 +1,2 @@
 [keycloak]
-keycloak.10.0.2.6.nip.io  ansible_host=192.168.56.6
+keycloak.enciso.website  ansible_host=192.168.56.6
