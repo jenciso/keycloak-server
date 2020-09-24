@@ -1,2 +1,2 @@
 [keycloak]
-keycloak.enciso.website  ansible_host=192.168.56.6
+infra.docs-planet.site  ansible_host=10.64.13.140

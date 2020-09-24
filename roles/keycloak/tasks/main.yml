@@ -19,15 +19,15 @@
   template: src={{ item }} dest=/data/keycloak/config/
   with_items:
     - default.conf
-  notify: 
+  notify:
     - restart keycloak
 
 
 - name: keycloak | copy ssl files
   copy: src={{ item }} dest=/data/keycloak/config/ssl-certs/
   with_items:
-    - private.key
-    - certificate-bundle.crt
+    - docs-planet.site.key
+    - docs-planet.site.crt
   notify:
     - restart keycloak
 
@@ -36,5 +36,5 @@
   template:
     src: docker-compose.yml
     dest: /data/keycloak/
-  notify: 
+  notify:
     - restart keycloak

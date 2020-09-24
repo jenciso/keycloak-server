@@ -1,30 +1,9 @@
 ---
-- name: keycloak | prereq 
+- name: keycloak
   hosts: all
-  remote_user: ansible
-  environment: "{{ proxy_env }}"
-  roles:
-    - common
-  tags:
-    - common
-
-
-- name: keycloak | docker-ce
-  hosts: all
-  remote_user: ansible
-  environment: "{{ proxy_env }}"
-  roles:
-    - docker-ce
-  tags:
-    - docker-ce
-
-
-- name: keycloak | keycloak
-  hosts: all
-  remote_user: ansible
+  remote_user: centos
   environment: "{{ proxy_env }}"
   roles:
     - keycloak
   tags:
     - keycloak
-
